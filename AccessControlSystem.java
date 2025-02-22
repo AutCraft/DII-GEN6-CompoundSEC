@@ -18,6 +18,7 @@ class AccessControlSystem {
 
     public void addAccessCard(AccessCard card) {
         accessCards.put(card.getCardId(), card);
+
         AuditTrail.logAction(card.getCardId(), Action.GRANT, "Card created and added.");
     }
 

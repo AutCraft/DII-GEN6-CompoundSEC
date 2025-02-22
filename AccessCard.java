@@ -1,6 +1,9 @@
+import java.time.format.DateTimeParseException;
 import java.util.Set;
 import java.util.HashSet;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Scanner;
 
 class AccessCard {
     private String cardId;
@@ -47,5 +50,77 @@ class AccessCard {
             return false;
         }
         return allowedFloors.contains(floorLevel) && allowedRooms.contains(roomId);
+    }
+
+    public static void modifyCard(AccessCard card, Scanner input, AccessControlSystem acSystem) {
+        System.out.println("-Modifying Card " + card.getCardId()+" -");
+
+        int choice;
+        do {
+            System.out.println();
+            System.out.println("1. Add Floor Access");
+            System.out.println("2. Revoke Floor Access");
+            System.out.println("3. Add Room Access");
+            System.out.println("4. Revoke Room Access");
+            System.out.println("5. Set Expiry Time");
+            System.out.println("0. Done");
+            System.out.println();
+            System.out.print("Choose option: ");
+            choice = input.nextInt();
+            input.nextLine(); // Consume newline
+            System.out.println();
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Floor Level (LOW, MEDIUM, HIGH): ");
+                    String floorLevelStr = input.nextLine().toUpperCase();
+                    try {
+                        FloorLevel floorLevel = FloorLevel.valueOf(floorLevelStr);
+                        card.addFloorAccess(floorLevel);
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Invalid Floor Level.");
+                    }
+                    break;
+                case 2:
+                    System.out.print("Floor Level to remove (LOW, MEDIUM, HIGH): ");
+                    floorLevelStr = input.nextLine().toUpperCase();
+                    try {
+                        FloorLevel floorLevel = FloorLevel.valueOf(floorLevelStr);
+                        card.revokeFloorAccess(floorLevel);
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Invalid Floor Level.");
+                    }
+                    break;
+                case 3:
+                    System.out.print("Room ID: ");
+                    String roomId = input.nextLine();
+                    card.addRoomAccess(roomId);
+                    break;
+                case 4:
+                    System.out.print("Room ID to remove: ");
+                    roomId = input.nextLine();
+                    card.revokeRoomAccess(roomId);
+                    break;
+                case 5:
+                    System.out.print("Expiry Time (yyyy-MM-dd HH:mm): ");
+                    String expiryTimeStr = input.nextLine();
+                    try {
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+                        LocalDateTime expiryTime = LocalDateTime.parse(expiryTimeStr, formatter);
+                        card.setExpiryTime(expiryTime);
+                        System.out.println("Expiry time set to: " + formatter.format(expiryTime)); // Confirmation
+                    } catch (DateTimeParseException e) {
+                        System.out.println("Invalid date/time format. Please use yyyy-MM-dd HH:mm");
+                    }
+                    break;
+                case 0:
+                    System.out.println("Card modifications complete.");
+                    acSystem.addAccessCard(card);
+                    break;
+                default:
+                    System.out.println("Invalid choice.");
+            }
+            System.out.println();
+        } while (choice != 0);
     }
 }
