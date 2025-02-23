@@ -115,12 +115,12 @@ class AccessCard {
                     break;
                 case 0:
                     System.out.println("Card modifications complete.");
-                    acSystem.addAccessCard(card);
                     break;
                 default:
                     System.out.println("Invalid choice.");
             }
             System.out.println();
         } while (choice != 0);
+        acSystem.addAccessCard(card);
     }
 }
