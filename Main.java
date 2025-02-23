@@ -188,7 +188,7 @@ public class Main {
                             System.out.println("Card not found.");
                             break;
                         }
-                        acSystem.addAccessCard(selectedCard);
+                        //acSystem.addAccessCard(selectedCard);
                         //AccessCard selectedCard = cards.get(cardChoice - 1);
 
                         System.out.println("Available Floors:");

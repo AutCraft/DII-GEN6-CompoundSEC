@@ -9,7 +9,7 @@ class AccessCard {
     private String cardId;
     private Set<FloorLevel> allowedFloors;
     private Set<String> allowedRooms;
-    private LocalDateTime expiryTime;
+    private LocalDateTime expiryTime = null;
 
     public AccessCard(String cardId) {
         this.cardId = cardId;
@@ -46,9 +46,11 @@ class AccessCard {
     }
 
     public boolean hasAccess(FloorLevel floorLevel, String roomId) {
-        if (LocalDateTime.now().isAfter(expiryTime)) {
-            return false;
-        }
+        if (expiryTime != null) { // Only check expiry if it's set
+            if (LocalDateTime.now().isAfter(expiryTime)) {
+                return false; // Expired
+            }
+        } // If expiryTime is null, it skips this block entirely (allowing access)
         return allowedFloors.contains(floorLevel) && allowedRooms.contains(roomId);
     }
 
