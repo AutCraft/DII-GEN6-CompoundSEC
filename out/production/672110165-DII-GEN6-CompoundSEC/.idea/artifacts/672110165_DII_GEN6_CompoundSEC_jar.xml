@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="672110165-DII-GEN6-CompoundSEC:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/672110165_DII_GEN6_CompoundSEC_jar</output-path>
+    <root id="archive" name="672110165-DII-GEN6-CompoundSEC.jar">
+      <element id="module-output" name="672110165-DII-GEN6-CompoundSEC" />
+    </root>
+  </artifact>
+</component>

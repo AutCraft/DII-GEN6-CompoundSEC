@@ -13,12 +13,14 @@ class Floor {
 
     public void addRoom(String roomId) {
         rooms.put(roomId, roomId);
-        System.out.println("Room put "+roomId);
+        System.out.println("Room add/put "+roomId);
+        AuditTrail.logActionRoom(roomId , Action.CREATE, "Create room in " + floorLevel + " floor");
     }
 
     public void removeRoom(String roomId) {
         rooms.remove(roomId, roomId);
         System.out.println("Room remove "+roomId);
+        AuditTrail.logActionRoom(roomId , Action.REMOVE, "Remove room in " + floorLevel + " floor");
     }
 
     public void listRoom() {

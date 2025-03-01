@@ -4,45 +4,50 @@ import java.util.HashSet;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
+import java.util.UUID;
 
 class AccessCard {
+    private String cardName;
     private String cardId;
     private Set<FloorLevel> allowedFloors;
     private Set<String> allowedRooms;
     private LocalDateTime expiryTime = null;
 
-    public AccessCard(String cardId) {
-        this.cardId = cardId;
+    public AccessCard(String cardName) {
+        this.cardName = cardName;
+        this.cardId = UUID.randomUUID().toString();
         this.allowedFloors = new HashSet<>();
         this.allowedRooms = new HashSet<>();
     }
 
-    public String getCardId() {
-        return cardId;
+    public String getCardName() {
+        return cardName;
     }
+    public String getCardId() {return  cardId;}
 
     public void addFloorAccess(FloorLevel floorLevel) {
         allowedFloors.add(floorLevel);
-        AuditTrail.logAction(cardId, Action.MODIFY, "Added floor access: " + floorLevel);
+        AuditTrail.logActionCard(cardName, cardId, Action.MODIFY, "Added floor access: " + floorLevel);
     }
 
     public void revokeFloorAccess(FloorLevel floorLevel) {
         allowedFloors.remove(floorLevel);
-        AuditTrail.logAction(cardId, Action.REVOKE, "Revoked floor access: " + floorLevel);
+        AuditTrail.logActionCard(cardName, cardId, Action.REVOKE, "Revoked floor access: " + floorLevel);
     }
 
     public void addRoomAccess(String roomId) {
         allowedRooms.add(roomId);
-        AuditTrail.logAction(cardId, Action.MODIFY, "Added room access: " + roomId);
+        AuditTrail.logActionCard(cardName, cardId, Action.MODIFY, "Added room access: " + roomId);
     }
 
     public void revokeRoomAccess(String roomId) {
         allowedRooms.remove(roomId);
-        AuditTrail.logAction(cardId, Action.REVOKE, "Revoked room access: " + roomId);
+        AuditTrail.logActionCard(cardName, cardId, Action.REVOKE, "Revoked room access: " + roomId);
     }
 
     public void setExpiryTime(LocalDateTime expiryTime) {
         this.expiryTime = expiryTime;
+        AuditTrail.logActionCard(cardName, cardId, Action.SET, "Expiry time set: " + expiryTime);
     }
 
     public boolean hasAccess(FloorLevel floorLevel, String roomId) {
@@ -55,7 +60,7 @@ class AccessCard {
     }
 
     public static void modifyCard(AccessCard card, Scanner input, AccessControlSystem acSystem) {
-        System.out.println("-Modifying Card " + card.getCardId()+" -");
+        System.out.println("-Modifying Card " + card.getCardName()+" - "+card.getCardId());
 
         int choice;
         do {

@@ -1,0 +1,1 @@
+java -jar out/artifacts/672110165_DII_GEN6_CompoundSEC_jar/672110165-DII-GEN6-CompoundSEC.jar

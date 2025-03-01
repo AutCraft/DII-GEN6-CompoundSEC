@@ -19,10 +19,10 @@ class AccessControlSystem {
     public void addAccessCard(AccessCard card) {
         accessCards.put(card.getCardId(), card);
 
-        AuditTrail.logAction(card.getCardId(), Action.GRANT, "Card created and added.");
+        AuditTrail.logActionCard(card.getCardName(), card.getCardId(), Action.GRANT, "Card created and added.");
     }
 
-    public boolean checkAccess(String cardId, FloorLevel floorLevel, String roomId) {
+    public boolean checkAccess(String cardName, String cardId, FloorLevel floorLevel, String roomId) {
         AccessCard card = accessCards.get(cardId);
         if (card == null) {
             System.out.println("Card not found!");
@@ -30,17 +30,17 @@ class AccessControlSystem {
         }
         boolean accessGranted = card.hasAccess(floorLevel, roomId);
         if (accessGranted) {
-            AuditTrail.logAction(cardId, Action.ACCESS, "Access granted to floor: " + floorLevel + ", room: " + roomId);
+            AuditTrail.logActionCard(cardName, cardId, Action.ACCESS, "Access granted to floor: " + floorLevel + ", room: " + roomId);
         } else {
-            AuditTrail.logAction(cardId, Action.ACCESS, "Access denied to floor: " + floorLevel + ", room: " + roomId);
+            AuditTrail.logActionCard(cardName, cardId, Action.ACCESS, "Access denied to floor: " + floorLevel + ", room: " + roomId);
         }
         return accessGranted;
     }
 
-    public void revokeCard(String cardId) {
+    public void revokeCard(String cardName,String cardId) {
         if (accessCards.containsKey(cardId)) {
             accessCards.remove(cardId);
-            AuditTrail.logAction(cardId, Action.REVOKE, "Card revoked.");
+            AuditTrail.logActionCard(cardName, cardId, Action.REVOKE, "Card revoked.");
         }
     }
 }

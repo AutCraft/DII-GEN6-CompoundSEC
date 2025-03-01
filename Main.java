@@ -1,4 +1,3 @@
-import java.time.LocalDateTime;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +9,7 @@ enum FloorLevel {
 }
 
 enum Action {
-    GRANT, REVOKE, MODIFY, ACCESS
+    GRANT, REVOKE, MODIFY, ACCESS, SET, CREATE, REMOVE
 }
 
 public class Main {
@@ -106,20 +105,23 @@ public class Main {
                     System.out.println();
                     switch (in_choose2) {
                         case "1":
-                            System.out.print("Card ID: ");
-                            String cardId = input.next();
-                            AccessCard newCard = new AccessCard(cardId);
+                            System.out.print("Card Name: ");
+                            String cardName = input.next();
+                            AccessCard newCard = new AccessCard(cardName);
                             cards.add(newCard);
                             acSystem.addAccessCard(newCard);
                             System.out.println("Card added successfully.");
                             System.out.println();
                             break;
                         case "2":
+                            System.out.print("Card Name to remove: ");
+                            String cardNameToRemove = input.next();
                             System.out.print("Card ID to remove: ");
                             String cardIdToRemove = input.next();
-                            boolean removed = cards.removeIf(card -> card.getCardId().equals(cardIdToRemove));
-                            if (removed) {
-                                acSystem.revokeCard(cardIdToRemove);
+                            boolean removedName = cards.removeIf(card -> card.getCardName().equals(cardNameToRemove));
+                            boolean removedId = cards.removeIf(card -> card.getCardId().equals(cardIdToRemove));
+                            if (removedName && removedId) {
+                                acSystem.revokeCard(cardNameToRemove ,cardIdToRemove);
                                 System.out.println("Card removed successfully.");
                             } else {
                                 System.out.println("Card not found.");
@@ -132,7 +134,7 @@ public class Main {
                             } else {
                                 System.out.println("Registered Cards:");
                                 for (AccessCard card : cards) {
-                                    System.out.println(card.getCardId());
+                                    System.out.println(card.getCardName());
                                 }
                             }
                             System.out.println();
@@ -144,7 +146,7 @@ public class Main {
                             for (AccessCard card : cards) {
                                 if (card.getCardId().equals(cardIdToModify)) {
                                     checkcardid = true;
-                                    acSystem.revokeCard(card.getCardId());
+                                    acSystem.revokeCard(card.getCardName(), card.getCardId());
                                     AccessCard.modifyCard(card, input, acSystem); // Helper function to modify card details
                                     break; // Important: Exit the loop after finding the card
                                 }
@@ -173,12 +175,14 @@ public class Main {
                     }
 
                     try {
+                        System.out.print("Enter Card Name: ");
+                        String cardName = input.next();
                         System.out.print("Enter Card ID: ");
                         String cardId = input.next();
 
                         AccessCard selectedCard = null;
                         for (AccessCard card : cards) {
-                            if (card.getCardId().equals(cardId)) {
+                            if (card.getCardName().equals(cardName) && card.getCardId().equals(cardId)) {
                                 selectedCard = card;
                                 break;
                             }
@@ -233,7 +237,7 @@ public class Main {
                         System.out.print("Enter room ID: ");
                         String roomId = input.nextLine();
 
-                        acSystem.checkAccess(cardId, selectedFloorLevel, roomId);
+                        acSystem.checkAccess(cardName, cardId, selectedFloorLevel, roomId);
 
                         System.out.println();
 
