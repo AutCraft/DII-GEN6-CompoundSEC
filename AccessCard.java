@@ -15,7 +15,7 @@ class AccessCard {
 
     public AccessCard(String cardName) {
         this.cardName = cardName;
-        this.cardId = UUID.randomUUID().toString();
+        this.cardId = UUID.randomUUID().toString() +"_"+ LocalDateTime.now();
         this.allowedFloors = new HashSet<>();
         this.allowedRooms = new HashSet<>();
     }
