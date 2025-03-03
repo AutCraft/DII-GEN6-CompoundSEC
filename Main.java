@@ -19,6 +19,7 @@ public class Main {
         boolean exit = true;
         String choose = "0";
 
+        // Factory อย่างง่าย
         Floor lowFloor = new Floor(FloorLevel.LOW);
         Floor mediumFloor = new Floor(FloorLevel.MEDIUM);
         Floor highFloor = new Floor(FloorLevel.HIGH);

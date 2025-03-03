@@ -2,6 +2,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.time.LocalDateTime;
 
+// Utility Class Pattern โดยรวม
 class AuditTrail {
     private static List<String> logs = new ArrayList<>();
 
